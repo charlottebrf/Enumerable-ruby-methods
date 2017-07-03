@@ -32,7 +32,61 @@ describe 'enumerable methods' do
 
   it 'drops an element from an array while a condition is true' do
     a = [1, 2, 3, 4, 5, 0]
-    a.drop_while { |i| i < 3 }   #=> [3, 4, 5, 0]
+    expect(a.drop_while { |i| i < 3 }).to eq [3, 4, 5, 0]
   end
+
+  it 'iterates to give the different combinations from 0 to array length of a given number' do
+    array = [1, 2, 3, 4]
+    expect(array.each_cons(2).to_a).to eq [[1, 2], [2, 3], [3, 4]]
+  end
+
+  it 'iterates to give the given number as a slice of an array length' do
+    array = [1, 2, 3, 4]
+    expect(array.each_slice(2).to_a).to eq [[1, 2], [3, 4]]
+  end
+
+  it 'iterates over an element and its index' do
+    array = [10, 20, 30, 40]
+    array2 = []
+    array.each_with_index { |num, index| array2 << num + index + 1}
+    expect(array2).to eq [11, 22, 33, 44]
+  end
+
+  it 'finds the first element that is truthy ' do
+    array = [1,2,3]
+    expect(array.find { |num| num % 2 == 0 }).to eq 2
+    expect(array.find { |num| num.odd? }).to eq 1
+  end
+
+  it 'finds all elements that are truthy and returns result an array' do
+    array = [1,2,3]
+    expect(array.find_all { |num| num % 2 == 0 }).to eq [2]
+    expect(array.find_all { |num| num.odd? }).to eq [1, 3]
+    expect(array.find_all { |num| num > 10 }).to eq []
+  end
+
+  it 'returns true or false if there is one' do
+    array = [1,2,3]
+    expect(array.one? { |num| num.even?} ).to eq true
+    expect(array.one? { |num| num.odd?} ).to eq false
+  end
+
+  it 'returns the first of an array' do
+    array = [1,2,3]
+    expect(array.first).to eq 1
+  end
+
+  it 'flattens results' do
+    array = [1,2]
+    expect(array.flat_map {|num| ['a', 'b']}).to eq ['a', 'b', 'a', 'b']
+  end
+
+  it 'groups an array by the result of a given requirement' do
+    array = [1,2,3,4]
+    expect(array.group_by {|num| num.odd? }).to eq ({true => [1,3], false => [2,4]})
+    expect(array.group_by {|num| num % 2 }).to eq ({1 => [1,3], 0 => [2,4]})
+  end
+
+
 
 end
